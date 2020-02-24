@@ -128,12 +128,12 @@ var girar=0.0; //girar
           gl.clear(gl.COLOR_BUFFER_BIT);
           // Calcualte position
           //position = Math.sin(count);
-          var translated = mat4.fromTranslation(mat4.create(), traslacion); //traslacion
-          var scaled = mat4.fromScaling(mat4.create(),escalar); //escalar
-          var rotated = mat4.fromZRotation(mat4.create(), girar); //girar según el eje Z
+          var translate = mat4.fromTranslation(mat4.create(), traslacion); //traslacion
+          var scale = mat4.fromScaling(mat4.create(),escalar); //escalar
+          var rotate = mat4.fromZRotation(mat4.create(), girar); //girar según el eje Z
 
-          var traslarescalar = mat4.multiply(mat4.create(), translated, scaled);
-          var todo = mat4.multiply(mat4.create(), traslarescalar, rotated);
+          var traslarescalar = mat4.multiply(mat4.create(), translate, scale);
+          var todo = mat4.multiply(mat4.create(), traslarescalar, rotate);
 
           // Set uniform value (u_Matrix) in vertex shader
           var mvMatrixUniform = gl.getUniformLocation(gl.program, "u_Matrix");
