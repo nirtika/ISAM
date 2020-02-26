@@ -27,6 +27,7 @@
   var gl;
   var count = 0.0;
   var canvas;
+  var z=-3;
     function init() {
         // Get canvas object from the DOM
         canvas = document.getElementById("myCanvas");
@@ -92,19 +93,13 @@
           // Call drawScene again in the next browser repaint
           if (rotationChecked !== null) {
             count += 0.01;
-          } else {
-           //count=0.0;
           }
           requestAnimationFrame(drawScene);
       }
 
         // Event listener for mouse wheel (ratón)
         document.addEventListener('wheel', function (event) {
-         var z = event.wheelDelta > 0 ? z + 1 : z - 1;
-         var camara;
-         gl.viewport(270, 250, z);
-        // camara =mat4.LookAt();
-         //gl.viewport(x, y, aspect * canvas.width, aspect * canvas.height);
+         z = event.wheelDelta > 0 ? z + 1 : z - 1;
         });
 
       function initVertexShader(gl) {
@@ -190,7 +185,7 @@
 
         // Write u_vMatrix
         var vMatrixUniform = gl.getUniformLocation(gl.program, "u_vMatrix");
-        var vMatrix = mat4.lookAt(mat4.create(), [0, 0, -3], [0, 0, 0], [0, 1, 0]);
+        var vMatrix = mat4.lookAt(mat4.create(), [0, 0, z], [0, 0, 0], [0, 1, 0]);
         gl.uniformMatrix4fv(vMatrixUniform, false, vMatrix);
       }
       //funcion para proyección ortogonal
