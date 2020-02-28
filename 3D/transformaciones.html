@@ -44,7 +44,7 @@
       // Vertices
       var dim = 2;
       var vertices = new Float32Array([-0.5, 0.5, 0.5, 0.5, 0.5, -0.5, // Triangle 1
-        -0.5, 0.5, 0.5, -0.5, -0.5, -0.5 // Triangle 2
+                                      -0.5, 0.5, 0.5, -0.5, -0.5, -0.5 // Triangle 2
       ]);
       // Fragment color
       var rgba = [0.0, 1, 0.0, 1.0];
@@ -100,9 +100,9 @@
       }
       return shader;
     }
-
-    var traslacion = [0.0, 0.0, 0.0]; //traslación
-    var escalar = [1.0, 1.0, 0.0]; //escalar
+    //declaraciones de las variables
+    var traslacion = [0.0, 0.0, 0.0]; //traslación (x,y,z)
+    var escalar = [1.0, 1.0, 0.0]; //escalar (x,y,z)
     var girar = 0.0; //girar
 
     function drawScene() {
@@ -113,11 +113,13 @@
       var translate = mat4.fromTranslation(mat4.create(), traslacion); //traslación
       var scale = mat4.fromScaling(mat4.create(), escalar); //escalar
       var rotate = mat4.fromZRotation(mat4.create(), girar); //girar según el eje Z
+      //para hacer dos cosas
       var traslarescalar = mat4.multiply(mat4.create(), translate, scale);
-      var todo = mat4.multiply(mat4.create(), traslarescalar, rotate);
+      var transformaryanimacion = mat4.multiply(mat4.create(), traslarescalar, rotate);
+
       // Set uniform value (u_Matrix) in vertex shader
       var mvMatrixUniform = gl.getUniformLocation(gl.program, "u_Matrix");
-      gl.uniformMatrix4fv(mvMatrixUniform, false, todo);
+      gl.uniformMatrix4fv(mvMatrixUniform, false, transformaryanimacion);
       // Call drawScene again in the next browser repaint
       count += 0.01;
       requestAnimationFrame(drawScene);
@@ -130,25 +132,27 @@
       // Clear canvas
       gl.clearColor(0.0, 0.0, 0.0, 1.0);
       gl.clear(gl.COLOR_BUFFER_BIT);
-      // Dibujar (n para rectangulo)
+      // Dibujar rectangulo)
       gl.drawArrays(gl.TRIANGLES, 0, n);
     }
 
     document.onkeydown = function(ev) {
+      //leer valor del cambio para cada una de las transformaciones
       var step = new Number(document.getElementById("step").value);
-      var positivo = (+step);
-      var negativo = (-step);
-      switch (ev.keyCode) {
+      var positivo = (+step); //el eje (positivo)
+      var negativo = (-step); //el eje (negativo)
+      //[x,y,z]=> [0,1,2] para cada caso (traslacion y escalar),*para girar es el eje z que esta definido con 'fromZRotation' arriba en la función drawscene.
+        switch (ev.keyCode) {
         case 37: // Left (Traslación a la izquierda del eje X)
           traslacion[0] += negativo;
           break;
         case 39: // Right (Traslación a la derecha del eje X)
           traslacion[0] += positivo;
           break;
-        case 38: // Up (Traslación havia arriba del eje X)
+        case 38: // Up (Traslación hacia arriba del eje Y)
           traslacion[1] += positivo;
           break;
-        case 40: // Down (Traslación hacia abajo del eje X)
+        case 40: // Down (Traslación hacia abajo del eje Y)
           traslacion[1] += negativo;
           break;
         case 33: // PageUp (Aumento de escala)
