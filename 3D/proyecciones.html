@@ -63,7 +63,6 @@
     function drawScene() {
           // Clear
           gl.clear(gl.COLOR_BUFFER_BIT);
-
           // Rotate
           var mvMatrix = mat4.fromRotation(mat4.create(), count, [0.5, 0.5, 0.5]);
           var uMvMatrix = gl.getUniformLocation(gl.program, "u_mvMatrix");
@@ -71,32 +70,32 @@
 
           // Draw
          //gl.drawElements(gl.TRIANGLES, 6 * 2 * 3, gl.UNSIGNED_SHORT, 0);
-
+         //leer los valores de los checkbox
           var rotationChecked = document.querySelector('input[name="rotation"]:checked');
           var primitiveValue = document.querySelector('input[name="primitive"]:checked').value;
           var projectionValue = document.querySelector('input[name="projection"]:checked').value;
 
+          //rotation
+          if (rotationChecked !== null) {
+            count += 0.01;
+          }
           //comparar triangulo o lineas
           if (primitiveValue== "lines") {
               gl.drawElements(gl.LINES, 6 * 2 * 3, gl.UNSIGNED_SHORT, 0); //lineas
           }else if (primitiveValue== "triangles") {
             gl.drawElements(gl.TRIANGLES, 6 * 2 * 3, gl.UNSIGNED_SHORT, 0); //triangulos
           }
-
           //prespectiva o ortogonal
           if (projectionValue =="perspective") {
             initPrespective(gl, canvas);
+          
           }else if (projectionValue =="orthographic") {
             initOrthographic(gl,canvas);
+            count +=0.01;
           }
 
-          // Call drawScene again in the next browser repaint
-          if (rotationChecked !== null) {
-            count += 0.01;
-          }
           requestAnimationFrame(drawScene);
       }
-
         // Event listener for mouse wheel (ratón)
         document.addEventListener('wheel', function (event) {
          z = event.wheelDelta > 0 ? z + 1 : z - 1;
@@ -137,7 +136,7 @@
             0.5, 0.5, -0.5,     0, 1, 0  // v23
         ];
 
-        // Indexes (for drawing squares using triangles)
+        // Indexes (for drawing squares using triangles) //conexiones de cada cuadrado
         var indexes = [
           0, 1, 2,
           0, 2, 3,
@@ -164,17 +163,16 @@
 
         var vertexPositionAttribute = gl.getAttribLocation(gl.program, "a_Position");
         gl.enableVertexAttribArray(vertexPositionAttribute);
-        gl.vertexAttribPointer(vertexPositionAttribute, 3, gl.FLOAT, false, 4 * (3 + 3), 0);
+        gl.vertexAttribPointer(vertexPositionAttribute, 3, gl.FLOAT, false, 4 * (3 + 3), 0); //(0= empieza desde 0)4 es el tamaño de bytes de Float y (3+3) es la posicion de xyz y los colores rgb (un bloque de 6)
 
         var vertexColorAttribute = gl.getAttribLocation(gl.program, "a_Color");
         gl.enableVertexAttribArray(vertexColorAttribute);
-        gl.vertexAttribPointer(vertexColorAttribute, 3, gl.FLOAT, false, 4 * (3 + 3), 4 * 3);
+        gl.vertexAttribPointer(vertexColorAttribute, 3, gl.FLOAT, false, 4 * (3 + 3), 4 * 3); //4*3 es la desplazamiento a colores
 
         // Write indexes in gl.ELEMENT_ARRAY_BUFFER
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, gl.createBuffer());
         gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indexes), gl.STATIC_DRAW);
       }
-
       //funcion para proyección prespectiva
       function initPrespective(gl, canvas) {
         // Write u_pMatrix
@@ -185,7 +183,8 @@
 
         // Write u_vMatrix
         var vMatrixUniform = gl.getUniformLocation(gl.program, "u_vMatrix");
-        var vMatrix = mat4.lookAt(mat4.create(), [0, 0, z], [0, 0, 0], [0, 1, 0]);
+        //var vMatrix = mat4.lookAt(mat4.create(), [0, 0, -3], [0, 0, 0], [0, 1, 0]);
+        var vMatrix = mat4.lookAt(mat4.create(), [0, 0, z], [0, 0, 0], [0, 1, 0]); //z para la camara
         gl.uniformMatrix4fv(vMatrixUniform, false, vMatrix);
       }
       //funcion para proyección ortogonal
@@ -201,15 +200,12 @@
         // Compile shaders
         var vertexShader = makeShader(gl, vs_source, gl.VERTEX_SHADER);
         var fragmentShader = makeShader(gl, fs_source, gl.FRAGMENT_SHADER);
-
         // Create program
         var glProgram = gl.createProgram();
-
         // Attach and link shaders to the program
         gl.attachShader(glProgram, vertexShader);
         gl.attachShader(glProgram, fragmentShader);
         gl.linkProgram(glProgram);
-
         // Use program
         gl.useProgram(glProgram);
         gl.program = glProgram;
@@ -226,6 +222,7 @@
         return shader;
       }
     </script>
+
 </head>
 <body onload="init()">
   <h1 style="text-align: center;">Proyecciones con WebGL</h1>
