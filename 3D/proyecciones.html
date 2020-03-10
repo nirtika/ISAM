@@ -88,7 +88,7 @@
           //prespectiva o ortogonal
           if (projectionValue =="perspective") {
             initPrespective(gl, canvas);
-          
+
           }else if (projectionValue =="orthographic") {
             initOrthographic(gl,canvas);
             count +=0.01;
@@ -184,7 +184,7 @@
         // Write u_vMatrix
         var vMatrixUniform = gl.getUniformLocation(gl.program, "u_vMatrix");
         //var vMatrix = mat4.lookAt(mat4.create(), [0, 0, -3], [0, 0, 0], [0, 1, 0]);
-        var vMatrix = mat4.lookAt(mat4.create(), [0, 0, z], [0, 0, 0], [0, 1, 0]); //z para la camara
+        var vMatrix = mat4.lookAt(mat4.create(), [0, 0, z], [0, 0, 0], [0, 1, 0]); //z (valor de ratón)para la camara
         gl.uniformMatrix4fv(vMatrixUniform, false, vMatrix);
       }
       //funcion para proyección ortogonal
