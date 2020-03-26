@@ -40,9 +40,9 @@
     <script>
         var gl;
         var canvas;
-        var count = 0.0;
+        //var count = 0.0;
         var z=-3;
-        var pos_camara=0.0; //posicion camara
+        var pos_camara=0.0; //posición cámara
         //flechas
         var arriba=[0.0,0.0,1.0,0.0,1.0,1.0,0.0,1.0];
         var abajo=[1.0,1.0,0.0,1.0,0.0,0.0,1.0,0.0];
@@ -89,12 +89,12 @@
         function initVertexShader(gl) {
           // Vertexes and texture coordinates
             var vertexesAndTextures = [ //X, Y, Z, S, T
-              //delante
+              //delante-->
                 -0.5, -0.5, -0.5, cara_final[0], cara_final[1], // v0 (abajo-izquierda)
                 0.5, -0.5, -0.5, cara_final[2], cara_final[3], //  v1 (abajo-derecha)
                 0.5, 0.5, -0.5, cara_final[4], cara_final[5],  //  v2 (arriba-derecha)
                 -0.5, 0.5, -0.5, cara_final[6], cara_final[7], // v3  (arriba-izquierda)
-              //detras--
+              //detrás-->
                 -0.5, -0.5, 0.5, cara_final[4], cara_final[5],
                 0.5, -0.5, 0.5, cara_final[6], cara_final[7],
                 0.5, 0.5, 0.5, cara_final[0], cara_final[1],
@@ -104,17 +104,17 @@
                 0.5, 0.5, -0.5, cara_final[2], cara_final[3],
                 0.5, 0.5, 0.5, cara_final[4], cara_final[5],
                 -0.5, 0.5, 0.5, cara_final[6], cara_final[7],
-              //abajo
+              //abajo--
                 -0.5, -0.5, 0.5, cara_final[0], cara_final[1],
                 0.5, -0.5, 0.5, cara_final[2], cara_final[3],
                 0.5, -0.5, -0.5, cara_final[4], cara_final[5],
                 -0.5, -0.5, -0.5, cara_final[6], cara_final[7],
-              //derecha--
+              //derecha-->
                 0.5, -0.5, -0.5, cara_final[0], cara_final[1],
                 0.5, -0.5, 0.5, cara_final[2], cara_final[3],
                 0.5, 0.5, 0.5, cara_final[4], cara_final[5],
                 0.5, 0.5, -0.5, cara_final[6], cara_final[7],
-              //izquierda
+              //izquierda-->
                 -0.5, -0.5, 0.5, cara_final[0], cara_final[1],
                 -0.5, -0.5, -0.5, cara_final[2], cara_final[3],
                 -0.5, 0.5, -0.5, cara_final[4], cara_final[5],
@@ -206,11 +206,11 @@
             // Clear
             gl.clear(gl.COLOR_BUFFER_BIT);
             initVertexShader(gl);
-            initProjection(gl, canvas); //si no la pos_camara no funciona !!?
-            // Rotate
-            var rotationX= mat4.fromXRotation(mat4.create(), girarX);
-            var rotationY= mat4.fromYRotation(mat4.create(), girarY);
-            var rotation = mat4.multiply(mat4.create(), rotationX, rotationY);
+            initProjection(gl, canvas); //si no la pos_camara no funciona !!
+            // Rotation
+            var rotationX= mat4.fromXRotation(mat4.create(), girarX); // Girar X
+            var rotationY= mat4.fromYRotation(mat4.create(), girarY); // Girar Y
+            var rotation = mat4.multiply(mat4.create(), rotationX, rotationY); // los dos
 
             var mvMatrixUniform = gl.getUniformLocation(gl.program, "u_mvMatrix");
             gl.uniformMatrix4fv(mvMatrixUniform, false, rotation);
