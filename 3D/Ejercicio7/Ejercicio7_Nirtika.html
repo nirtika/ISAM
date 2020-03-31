@@ -15,7 +15,7 @@
         uniform mat4 u_vMatrix;
         uniform mat4 u_mvMatrix;
         uniform mat4 u_NormalMatrix;
-        //varying es para pasar variables y hay que poner en los ambos iguales.
+        //varying es para pasar las variables y hay que poner en los ambos iguales.
         varying vec2 v_TexCoord;
         varying vec4 transformedNormal;
 
@@ -30,25 +30,27 @@
     <script id="shaderFs" type="x-shader/x-fragment">
         precision highp float;
         precision mediump float;
-        uniform sampler2D u_Sampler;
 
-        varying vec2 v_TexCoord;
-        varying vec4 transformedNormal;
+        uniform sampler2D u_Sampler;
 
         uniform vec3 u_AmbientLight;
         uniform vec3 u_LightColor;
         uniform vec3 u_LightDirection;
 
+        varying vec2 v_TexCoord;
+        varying vec4 transformedNormal;
+
         void main(void) {
           vec4 v_textura = texture2D(u_Sampler, v_TexCoord); //imagen y las coordenadas
+          //normaliza cada vector
           vec3 normal = normalize(transformedNormal.xyz);
+          //Valor máximo entre 0 y el producto escalar del vector normal transformado y la dirección de la luz
           float nDotL = max(dot(u_LightDirection, normal), 0.0);
           //float nDotL = max(dot(u_LightDirection, normalize(transformedNormal.xyz)), 0.0);
-          //luz ambiental
+          //luz ambiental y difusa
           vec3 ambient = u_AmbientLight * v_textura.rgb;
-          //luz direccional
-          vec3 diffuse = u_LightColor * v_textura.rgb * nDotL;
-          gl_FragColor = vec4(diffuse + ambient, 1.0);
+          vec3 diffuse = u_LightColor * v_textura.rgb * nDotL; // (multiplicando luz difusa por el coseno(nDotL))
+          gl_FragColor = vec4(diffuse + ambient, 1.0); //(en 1.0 tambien puedo poner v_textura.a)
 
         }
     </script>
@@ -97,6 +99,7 @@
         function initVertexShader(gl) {
             // Vertexes and textures coordinates
             var vertexesAndTextures = [];
+            //vectores normales de los vértices
             var Normals= [];
             for (var i = 0; i <= LATITUDE_BANDS; i++) {
                 var theta = i * Math.PI / LATITUDE_BANDS;
@@ -158,16 +161,16 @@
             gl.enableVertexAttribArray(vertexColorAttribute);
             gl.vertexAttribPointer(vertexColorAttribute, 2, gl.FLOAT, false, 4 * (3 + 2), 4 * 3);
 
+            // Write indexes in gl.ELEMENT_ARRAY_BUFFER
+            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, gl.createBuffer());
+            gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indexes), gl.STATIC_DRAW);
+
             gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
             gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(Normals), gl.STATIC_DRAW);
 
             var vertexNormalAttribute = gl.getAttribLocation(gl.program, "a_Normal");
             gl.enableVertexAttribArray(vertexNormalAttribute);
             gl.vertexAttribPointer(vertexNormalAttribute, 3, gl.FLOAT, false, 0, 0);
-
-            // Write indexes in gl.ELEMENT_ARRAY_BUFFER
-            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, gl.createBuffer());
-            gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indexes), gl.STATIC_DRAW);
         }
 
         function initProjection(gl, canvas) {
@@ -205,6 +208,7 @@
         }
 
         function initTexturesAndDraw(gl) {
+          //cargar la imagen
             var image = new Image();
             image.src = 'deathstar.png';
             image.onload = function () {
@@ -231,7 +235,9 @@
         function drawScene() {
             // Clear
             gl.clear(gl.COLOR_BUFFER_BIT);
+
             initProjection(gl, canvas);
+
             // Rotate
             var mvMatrix = mat4.fromRotation(mat4.create(), count, [0, 0.5, 0]);
             var uMvMatrix = gl.getUniformLocation(gl.program, "u_mvMatrix");
@@ -285,7 +291,7 @@
 </head>
 
 <body onload="init()">
-  <h1 style="text-align: center;">Ejercicio 7: Iluminación</h1>
+  <h1>Ejercicio 7: Iluminación</h1>
 <canvas id="myCanvas" width="640" height="480"></canvas><br>
 <b>Light direction</b><br>
 <input type="range" id="x" min="-20" max="20" value="-15" step="1">X<br>
