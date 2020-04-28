@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<!--<meta name="author" content="Nirtika Kandel">-->
+<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+<head>
+<title> Juego Pong: WEBGL Y Three.js</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/103/three.min.js"></script>
+<script src="js/pong.js"></script>
+<style>
+  #Play {
+  background-color: #4CAF50; /* Green */
+  border: 2px solid #4CAF50;
+  border-radius: 5px;
+  font-family:Book Antiqua;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 30px;
+  margin: 10px 20px;
+  cursor: pointer;
+
+ }
+ #Play:hover {
+  color: black;
+ }
+</style>
+</head>
+<body onload="init()">
+<div>
+  <button id="Play" type="button" name="button"> PLAY </button>
+  <button id="1jugador" type="button" name="button"> 1 Jugador</button>
+  <button id="2jugador" type="button" name="button"> 2 Jugador</button>
+</div>
+</body>
+
+</html>
