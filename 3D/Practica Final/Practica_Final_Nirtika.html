@@ -1,38 +1,82 @@
+<!--
+Partes implementadas:
+- Funcionalidad básica
+- Funcionalidad avanzada (cambio de la velocidad . cambio de ángulo depende de los niveles de juego, posibilidad de ganar a la CPU)
+- Mejoras (opción para poder elegir los niveles y la textura del suelo, todos los textos en 3D (titulo,marcador,ganador) ,[modo de juego: 1 jugador* o dos jugadores (*1 jugador es contra CPU)])
+-->
 <!DOCTYPE html>
 <html>
 <!--<meta name="author" content="Nirtika Kandel">-->
-<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1">
 <head>
-<title> Juego Pong: WEBGL Y Three.js</title>
+<title> Juego Pong </title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/103/three.min.js"></script>
 <script src="js/pong.js"></script>
-<style>
-  #Play {
-  background-color: #4CAF50; /* Green */
-  border: 2px solid #4CAF50;
-  border-radius: 5px;
-  font-family:Book Antiqua;
-  color: white;
-  padding: 10px;
-  text-align: center;
-  font-weight: bold;
-  font-size: 30px;
-  margin: 10px 20px;
-  cursor: pointer;
 
- }
- #Play:hover {
-  color: black;
- }
+<style>
+ #menu {
+  	position: absolute;
+  	top: 50px;
+    left: 50px;
+  	text-align: center;
+    font-family:Book Antiqua;
+    color: rgb(255,255,255);
+  	font-size: 20px;
+	}
+	button {
+		color: rgb(255,255,255);
+		background: rgb(255,255,255,0.1);
+		border: 2px;
+		padding: 10px;
+    border-radius:5px;
+		font-size: 20px;
+		cursor: pointer;
+	}
+	button:hover {
+		background-color: #4CAF50;
+	}
+  .button-clicked {
+    color: #000000;
+    background-color: rgba(0,255,255,0.5);
+  }
+  .texture-selected {
+    color: #000000;
+    background-color: rgba(255,225,222,0.5);
+  }
+  #Level {
+  color: white;
+   background: rgb(255,255,255,0.1);
+   font-family:Book Antiqua;
+   border: 2px;
+   padding: 10px;
+   font-size: 20px;
+   cursor: pointer;
+   border-radius:5px;
+  }
+  option{
+   color: #000000;
+   background: rgb(255,255,255,1);
+  }
+
 </style>
+
 </head>
 <body onload="init()">
-<div>
-  <button id="Play" type="button" name="button"> PLAY </button>
-  <button id="1jugador" type="button" name="button"> 1 Jugador</button>
-  <button id="2jugador" type="button" name="button"> 2 Jugador</button>
-</div>
+  <div id="menu">
+    <button id="Play" type="button" name="button"> PLAY </button><br><br>
+    <span>Modo:</span>
+       <button id="1player" class="button-clicked" type="button" name="button"> 1 Jugador</button>
+       <button id="2players" type="button" name="button"> 2 Jugadores </button> <br><br>
+       <span>Nivel:</span>
+       <select id="Level" onChange="setLevel()" >
+          <option id="level1" value="1">Básico</option>
+          <option id="level2" value="2">Medio</option>
+          <option id="level3" value="3">Difícil</option>
+      </select>
+      <br>
+      <br><button id="change-texture" type="button" name="button">Cambiar Textura</burron
+	</div>
 </body>
 
 </html>
