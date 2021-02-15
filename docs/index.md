@@ -1,3 +1,3 @@
 ## Practicas 3D
 
-[Link](url) and ![Image](src)
+[Practicas](https://github.com/nirtika/ISAM_3D/tree/master/3D) 
