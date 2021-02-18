@@ -1,8 +1,8 @@
 # Gráficos y Visualización en 3D  
-## [ Website ] (https://nirtika.github.io/ISAM_3D/)
-
+https://nirtika.github.io/ISAM_3D/
 
 ## [Práctica Final: Juego de pong](https://nirtika.github.io/ISAM_3D/3D/Practica%20Final/Practica_Final_Nirtika.html) [WEBGL]
+
 ### Prácticas: 
  [1 Dibujar Puntos](https://nirtika.github.io/ISAM_3D/3D/ejercicio3_dibujar_puntos.html)<br>
  [2 Transformaciónes](https://nirtika.github.io/ISAM_3D/3D/ejercicio4_transformaciones.html)<br>
