@@ -1,5 +1,4 @@
 # Gráficos y Visualización en 3D  
-https://nirtika.github.io/ISAM_3D
 
 ## [Práctica Final: Juego de pong](https://nirtika.github.io/ISAM_3D/3D/Practica%20Final/Practica_Final_Nirtika.html) [WEBGL]
 
